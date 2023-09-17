@@ -1,41 +1,42 @@
 namespace MaxSum.Utils;
-
-public class Solution {
-    public int MaxSum(int[] nums) 
+public class Solution
+{
+    // public static int SUM = 0;
+    public int MaxSum(int[] nums)
     {
-        var (max0, max1) = (new int [10], new int [10]);
-
-        foreach(var n in nums)
+        List<int> TEMP_ARRAY = new();
+        // Loop through array
+        for (int i = 0; i < nums.Length - 1; i++)
         {
-            var md = GetMaxDigit(n);
+            int SUM = nums[i] + nums[i + 1];
 
-            if(n >= max0[md])
+            // Check if the digit, SUM, contain equal digits
+            // Convert SUM to string
+            string CONVERTED_OUPTUT = SUM.ToString();
+
+            // Convert CONVERTED_OUTPUT to array
+            char[] CHARS = CONVERTED_OUPTUT.ToCharArray();
+
+            // Check if a single CHAR's length > 1 & first index is == last index
+            if (CHARS.Length > 1 && CHARS[0] == CHARS[1])
             {
-                (max1[md], max0[md]) = (max0[md], n);
-            }
-            else if(n > max1[md])
-            {
-                max1[md] = n;
+                // Covert CHARS back to string
+                string OUTPUT = new(CHARS);
+
+                // Convert current OUTPUT to int
+                int TEMP = int.Parse(OUTPUT);
+                // Add TEMP value to TEMP_ARRAY
+                TEMP_ARRAY.Add(TEMP);
             }
         }
-
-        var maxSum = -1;
-
-        for(var i=1; i<10; i++)
+        if (TEMP_ARRAY.Count > 0)
         {
-            if(max1[i] > 0)
-                maxSum = Math.Max(maxSum, max0[i] + max1[i]);
+            // Sort the list from lowest to highest
+            TEMP_ARRAY.Sort();
+            TEMP_ARRAY.Reverse();
+
+            return TEMP_ARRAY[0];
         }
-
-        return maxSum;
-    }
-
-    int GetMaxDigit(int n)
-    {
-        var max = n % 10;
-
-        for(n /= 10; n > 0; n /= 10) max = Math.Max(max, n % 10);
-
-        return max;
+        return -1;
     }
 }
